@@ -42,7 +42,7 @@ func DataProcessingWorkflow(ctx workflow.Context, data string) (string, error) {
 	}
 	goCtx := workflow.WithActivityOptions(ctx, goActivityOptions)
 	var uppercased string
-	err = workflow.ExecuteActivity(goCtx, AddSuffixActivity, uppercased).Get(goCtx, &processed)
+	err = workflow.ExecuteActivity(goCtx, AddSuffixActivity, uppercased).Get(goCtx, &uppercased)
 	if err != nil {
 		return "", fmt.Errorf("failed to add suffix: %w", err)
 	}
@@ -55,7 +55,7 @@ func DataProcessingWorkflow(ctx workflow.Context, data string) (string, error) {
 	tsCtx := workflow.WithActivityOptions(ctx, tsActivityOptions)
 	var processed string
 
-	err = workflow.ExecuteActivity(tsCtx, "TypeScriptToUppercaseActivity", prefixed).Get(tsCtx, &uppercased)
+	err = workflow.ExecuteActivity(tsCtx, "TypeScriptToUppercaseActivity", prefixed).Get(tsCtx, &processed)
 	if err != nil {
 		return "", fmt.Errorf("failed to uppercase data: %w", err)
 	}
