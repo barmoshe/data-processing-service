@@ -204,10 +204,4 @@ Contributions are welcome! If you have suggestions or improvements, please open 
 
 ---
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
 Happy coding, and enjoy orchestrating your cross-language workflows with Temporal!
