@@ -49,7 +49,7 @@ This Temporal project is organized as follows:
 
 8 directories, 15 files
 ```
-
+<br>  
 ## Order of Execution
 
 1. **Temporal Server**  
