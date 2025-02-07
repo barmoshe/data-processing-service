@@ -8,57 +8,47 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 
-// DataProcessingWorkflow is the Workflow definition.
-// It calls two Activities in sequence: first to add a random prefix (handled by Python),
-// then to append a suffix (handled by Go).
 func DataProcessingWorkflow(ctx workflow.Context, data string) (string, error) {
-	// Define a retry policy for the Python activity.
-	retrypolicy := &temporal.RetryPolicy{
-		InitialInterval:        time.Second,
-		BackoffCoefficient:     2.0,
-		MaximumInterval:        100 * time.Second,
-		MaximumAttempts:        5, // 0 is unlimited retries
-		NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
+	// Define a retry policy.
+	retryPolicy := &temporal.RetryPolicy{
+		InitialInterval:    time.Second,       // First retry after 1 second
+		BackoffCoefficient: 2.0,               // Double the wait time on each retry (1s → 2s → 4s → 8s, etc.)
+		MaximumInterval:    100 * time.Second, // Cap wait time at 100 seconds
+		MaximumAttempts:    5,                 // Retry up to 5 times before giving up
 	}
 
-	// Set ActivityOptions for the Python activity.
-	pythonActivityOptions := workflow.ActivityOptions{
-		TaskQueue:           "python-task-queue", // Points to the Python worker.
+	// Step 1: Add a prefix(Python)
+	pythonCtx := workflow.WithActivityOptions(ctx, workflow.ActivityOptions{
+		TaskQueue:           "python-task-queue",
 		StartToCloseTimeout: time.Minute,
-		RetryPolicy:         retrypolicy,
-	}
-	pythonCtx := workflow.WithActivityOptions(ctx, pythonActivityOptions)
+		RetryPolicy:         retryPolicy,
+	})
 
 	var prefixed string
-	// Call the Python activity by name.
-	err := workflow.ExecuteActivity(pythonCtx, "PythonAddRandomPrefixActivity", data).Get(pythonCtx, &prefixed)
-	if err != nil {
+	if err := workflow.ExecuteActivity(pythonCtx, "PythonAddRandomPrefixActivity", data).Get(pythonCtx, &prefixed); err != nil {
 		return "", fmt.Errorf("failed to add prefix: %w", err)
 	}
 
-	// Set ActivityOptions for the Go suffix activity.
-	goActivityOptions := workflow.ActivityOptions{
+	// Step 2: Add a suffix(Go)
+	goCtx := workflow.WithActivityOptions(ctx, workflow.ActivityOptions{
 		StartToCloseTimeout: time.Minute,
-		RetryPolicy:         retrypolicy,
-	}
-	goCtx := workflow.WithActivityOptions(ctx, goActivityOptions)
+		RetryPolicy:         retryPolicy,
+	})
 
 	var uppercased string
-	err = workflow.ExecuteActivity(goCtx, AddSuffixActivity, prefixed).Get(goCtx, &uppercased)
-	if err != nil {
+	if err := workflow.ExecuteActivity(goCtx, AddSuffixActivity, prefixed).Get(goCtx, &uppercased); err != nil {
 		return "", fmt.Errorf("failed to add suffix: %w", err)
 	}
-	// Set ActivityOptions for the ts UpperCase activity.
-	tsActivityOptions := workflow.ActivityOptions{
-		TaskQueue:           "typescript-task-queue", // TS worker's task queue.
-		StartToCloseTimeout: time.Minute,
-		RetryPolicy:         retrypolicy,
-	}
-	tsCtx := workflow.WithActivityOptions(ctx, tsActivityOptions)
-	var processed string
 
-	err = workflow.ExecuteActivity(tsCtx, "TypeScriptToUppercaseActivity", uppercased).Get(tsCtx, &processed)
-	if err != nil {
+	// Step 3: upercase the string (ts)
+	tsCtx := workflow.WithActivityOptions(ctx, workflow.ActivityOptions{
+		TaskQueue:           "typescript-task-queue",
+		StartToCloseTimeout: time.Minute,
+		RetryPolicy:         retryPolicy,
+	})
+
+	var processed string
+	if err := workflow.ExecuteActivity(tsCtx, "TypeScriptToUppercaseActivity", uppercased).Get(tsCtx, &processed); err != nil {
 		return "", fmt.Errorf("failed to uppercase data: %w", err)
 	}
 

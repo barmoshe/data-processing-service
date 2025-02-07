@@ -1,13 +1,11 @@
-// File: client/main.go
 package main
 
 import (
 	"context"
+	"data-processing-service/processing"
 	"fmt"
 	"log"
 	"os"
-
-	"data-processing-service/processing" // Import the processing package.
 
 	"github.com/google/uuid"
 	"go.temporal.io/sdk/client"
