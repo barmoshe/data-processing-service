@@ -2,3 +2,4 @@
 /worker/ts/node_modules
 your_temporal.db
 /workers/ts/node_modules
+workers/python/__pycache__/python_worker.cpython-313.pyc
