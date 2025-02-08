@@ -1,3 +1,8 @@
+Below is the updated README reflecting the new folder structure:
+
+---
+
+```markdown
 # Data Processing Service
 
 A practical demonstration of building cross-language microservices with [Temporal](https://temporal.io/). This project orchestrates activities written in **Go**, **Python**, and **TypeScript**—showcasing how Temporal can seamlessly coordinate different languages to build a robust, modular data processing workflow.
@@ -18,7 +23,7 @@ A practical demonstration of building cross-language microservices with [Tempora
   - [Running Workers](#running-workers)
   - [Running the Client](#running-the-client)
 - [How It Works](#how-it-works)
-- [Contributing](#contributing)
+- [Summary](#summary)
 
 ---
 
@@ -43,18 +48,15 @@ This repository is based on the article [Building a Cross-Language Data Processi
 │   └── activities_ts.ts           # TypeScript activity: toUpperCaseActivity.
 ├── client
 │   └── main.go                    # Go client to submit workflows.
-├── go.mod                         # Go module file.
-├── go.sum                         # Go module checksums.
 ├── readme.md                      # This file.
-├── workflow
+├── workflows
 │   └── workflow.go                # Go workflow definition invoking activities.
 ├── workers
-│   ├── main.go                    # Go worker that executes the workflow and Go activities.
+│   ├── go
+│   │   └── main.go                # Go worker that executes the workflow and Go activities.
 │   ├── python
 │   │   └── python_worker.py       # Python worker for prefixing.
 │   └── ts
-│       ├── package-lock.json
-│       ├── package.json
 │       └── ts_worker.ts           # TypeScript worker for uppercasing.
 └── your_temporal.db               # Local database file created by the Temporal server.
 ```
@@ -121,15 +123,15 @@ Each worker processes specific activities and listens on its designated task que
 
 #### Go Worker
 
-- **Location:** `workers/main.go`
+- **Location:** `workers/go/main.go`
 - **Command:**
 
   ```bash
-  go run workers/main.go
+  go run workers/go/main.go
   ```
 
 - **Notes:**  
-  This worker registers the workflow (from the `workflow` folder) and the Go activity (`AddSuffixActivity` from the `activities` folder). It listens on the task queue `data-processing-task-queue`.
+  This worker registers the workflow (from the `workflows` folder) and the Go activity (`AddSuffixActivity` from the `activities` folder). It listens on the task queue `data-processing-task-queue`.
 
 #### Python Worker
 
@@ -178,7 +180,7 @@ Check the Temporal UI ([http://localhost:8080](http://localhost:8080)) to see th
 ## How It Works
 
 1. **Workflow Orchestration:**  
-   The workflow (defined in `workflow/workflow.go`) sequentially calls activities across different languages:
+   The workflow (defined in `workflows/workflow.go`) sequentially calls activities across different languages:
    - **Python Activity:** Adds a random prefix to the input data (implemented in `activities/activities_python.py`).
    - **Go Activity:** Appends a suffix to the data (implemented in `activities/activities.go`).
    - **TypeScript Activity:** Converts the modified data to uppercase (implemented in `activities/activities_ts.ts`).
@@ -194,16 +196,10 @@ Check the Temporal UI ([http://localhost:8080](http://localhost:8080)) to see th
 
 ---
 
-## Contributing
+## Summary
 
-Contributions are welcome! If you have suggestions or improvements, please open an issue or submit a pull request.
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Commit your changes and push your branch.
-4. Open a pull request explaining your changes.
-
+This project demonstrates how to build a cross-language data processing service using Temporal. 
+By splitting the implementation into language-specific workers and leveraging Temporal's workflow orchestration, you can create modular, scalable microservices that interact seamlessly—no matter the language.
 ---
 
-Happy coding, and enjoy orchestrating your cross-language workflows with Temporal!
-
+Simply replace your existing `readme.md` content with the updated markdown above to reflect the new folder structure and usage instructions. Enjoy building your cross-language data processing service with Temporal!
