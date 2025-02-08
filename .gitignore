@@ -1,2 +1,11 @@
 /node_modules
 your_temporal.db
+/node_modules 12.30.16
+/activities 12.30.16/__pycache__
+/activities/__pycache__
+/workers/python/__pycache__
+package-lock.json
+package.json
+go.sum
+go.mod
+.DS_Store
