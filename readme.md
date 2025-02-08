@@ -24,7 +24,7 @@ A practical demonstration of building cross-language microservices with [Tempora
 
 This repository is based on the article *Building Services Across Languages: A Temporal Journey*. It demonstrates:
 
-- **Temporal Server Setup:** Running a local Temporal server with a built-in UI and database file.
+- **Temporal Server Setup:** Running a local Temporal server with a built-in UI and a local database file.
 - **Multi-Language Workflow:** A workflow that invokes activities across Go, Python, and TypeScript.
 - **Task Queue Coordination:** How each worker listens on a dedicated task queue.
 - **Real vs. Demo Activities:** Starting with demo activities and progressively replacing them with real implementations.
@@ -35,21 +35,20 @@ This repository is based on the article *Building Services Across Languages: A T
 
 ```
 .
+├── activities
+│   ├── activities.go              # Go activity: AddSuffixActivity.
+│   ├── activities_python.py       # Python activity: PythonAddRandomPrefixActivity.
+│   └── activities_ts.ts           # TypeScript activity: toUpperCaseActivity.
 ├── client
 │   └── main.go                    # Go client to submit workflows.
 ├── go.mod                         # Go module file.
 ├── go.sum                         # Go module checksums.
-├── processing
-│   ├── __pycache__                
-│   ├── activities.go              # Go activity: AddSuffixActivity.
-│   ├── activities_python.py       # Python activity: PythonAddRandomPrefixActivity.
-│   ├── activities_ts.ts           # TypeScript activity: toUpperCaseActivity.
-│   └── workflow.go                # Workflow definition invoking activities.
 ├── readme.md                      # This file.
+├── workflow
+│   └── workflow.go                # Go workflow definition invoking activities.
 ├── workers
 │   ├── main.go                    # Go worker that executes the workflow and Go activities.
 │   ├── python
-│   │   ├── __pycache__
 │   │   └── python_worker.py       # Python worker for prefixing.
 │   └── ts
 │       ├── package-lock.json
@@ -110,7 +109,7 @@ UI:      http://localhost:8080
 Metrics: http://localhost:62564/metrics
 ```
 
-*(Screenshot of the Temporal UI on a browser is recommended.)*
+*(A screenshot of the Temporal UI in your browser is recommended.)*
 
 ---
 
@@ -128,7 +127,7 @@ Each worker processes specific activities and listens on its designated task que
   ```
 
 - **Notes:**  
-  This worker registers the workflow and the Go activity (`AddSuffixActivity`). It listens on the task queue `data-processing-task-queue`.
+  This worker registers the workflow (from the `workflow` folder) and the Go activity (`AddSuffixActivity` from the `activities` folder). It listens on the task queue `data-processing-task-queue`.
 
 #### Python Worker
 
@@ -140,7 +139,7 @@ Each worker processes specific activities and listens on its designated task que
   ```
 
 - **Notes:**  
-  This worker handles the Python activity (`PythonAddRandomPrefixActivity`) and polls the `python-task-queue`.
+  This worker handles the Python activity (`PythonAddRandomPrefixActivity` from the `activities` folder) and polls the `python-task-queue`.
 
 #### TypeScript Worker
 
@@ -152,7 +151,7 @@ Each worker processes specific activities and listens on its designated task que
   ```
 
 - **Notes:**  
-  This worker processes the TypeScript activity (`TypeScriptToUppercaseActivity`) and polls the `typescript-task-queue`.
+  This worker processes the TypeScript activity (`TypeScriptToUppercaseActivity` from the `activities` folder) and polls the `typescript-task-queue`.
 
 ---
 
@@ -168,7 +167,7 @@ go run main.go "sample-data"
 Upon execution, the client will:
 - Generate a unique workflow ID.
 - Submit the workflow to the Temporal server.
-- Display the processed result (e.g., `LAMBDA-SAMPLE-DATA-SIX`).
+- Display the processed result (for example, `LAMBDA-SAMPLE-DATA-SIX`).
 
 Check the Temporal UI ([http://localhost:8080](http://localhost:8080)) to see the workflow's progress and details.
 
@@ -177,16 +176,16 @@ Check the Temporal UI ([http://localhost:8080](http://localhost:8080)) to see th
 ## How It Works
 
 1. **Workflow Orchestration:**  
-   The workflow (`processing/workflow.go`) sequentially calls activities across different languages:
-   - **Python Activity:** Adds a random prefix to the input data.
-   - **Go Activity:** Appends a suffix to the data.
-   - **TypeScript Activity:** Converts the modified data to uppercase.
+   The workflow (defined in `workflow/workflow.go`) sequentially calls activities across different languages:
+   - **Python Activity:** Adds a random prefix to the input data (implemented in `activities/activities_python.py`).
+   - **Go Activity:** Appends a suffix to the data (implemented in `activities/activities.go`).
+   - **TypeScript Activity:** Converts the modified data to uppercase (implemented in `activities/activities_ts.ts`).
    
 2. **Task Queue Management:**  
    Each activity is executed by a worker that listens on a specific task queue:
-   - **`python-task-queue`** for Python.
-   - **`data-processing-task-queue`** for Go.
-   - **`typescript-task-queue`** for TypeScript.
+   - **`python-task-queue`** for the Python activity.
+   - **`data-processing-task-queue`** for the Go activity and workflow.
+   - **`typescript-task-queue`** for the TypeScript activity.
    
 3. **Temporal's Role:**  
    Temporal ensures seamless communication between these activities, handling retries and state management, so you can focus on your business logic.
@@ -205,3 +204,13 @@ Contributions are welcome! If you have suggestions or improvements, please open 
 ---
 
 Happy coding, and enjoy orchestrating your cross-language workflows with Temporal!
+
+---
+
+## License
+
+*Specify your license information here (for example, MIT License).*
+
+---
+
+This updated README reflects the new folder structure where workflow logic resides in the `workflow` folder and all activity implementations are now in the `activities` folder. Be sure to update your import paths in your code as needed. Enjoy building your cross-language data processing service!
