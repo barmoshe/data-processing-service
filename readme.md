@@ -1,8 +1,3 @@
-Below is the updated README reflecting the new folder structure:
-
----
-
-```markdown
 # Data Processing Service
 
 A practical demonstration of building cross-language microservices with [Temporal](https://temporal.io/). This project orchestrates activities written in **Go**, **Python**, and **TypeScript**—showcasing how Temporal can seamlessly coordinate different languages to build a robust, modular data processing workflow.
@@ -75,21 +70,58 @@ This repository is based on the article [Building a Cross-Language Data Processi
 
 ## Installation & Setup
 
-1. **Clone the Repository:**
+1. **Install Temporal CLI:**
+
+   - For macOS, run:
+     ```bash
+     brew install temporal
+     ```
+   - Or follow the [Temporal CLI installation guide](https://temporal.io/setup/install-temporal-cli) for other platforms.
+
+2. **Clone the Repository & Navigate to the Project Folder:**
 
    ```bash
    git clone https://github.com/your-username/data-processing-service.git
    cd data-processing-service
    ```
 
-2. **Install Node Dependencies:**
+3. **Initialize the Go Module & Install Dependencies:**
 
-   Navigate to the TypeScript worker directory and install dependencies:
+   ```bash
+   go mod init data-processing-service
+   go get go.temporal.io/sdk
+   go mod tidy
+   ```
+
+4. **Install Node Dependencies for the TypeScript Worker:**
 
    ```bash
    cd workers/ts
    npm install
    cd ../..
+   ```
+
+5. **Start the Temporal Server:**
+
+   Run the following command to start a local Temporal server. This command creates a local database file (`your_temporal.db`) and opens the Temporal UI on port `8080`:
+   
+   ```bash
+   temporal server start-dev --db-filename your_temporal.db --ui-port 8080
+   ```
+   
+   You should see output similar to:
+   
+   ```plaintext
+   CLI 1.2.0 (Server 1.26.2, UI 2.34.0)
+   Server:  localhost:7233
+   UI:      http://localhost:8080
+   Metrics: http://localhost:62564/metrics
+   ```
+
+6. **(Optional) Open the Project in VS Code:**
+
+   ```bash
+   code .
    ```
 
 ---
@@ -98,22 +130,7 @@ This repository is based on the article [Building a Cross-Language Data Processi
 
 ### Starting the Temporal Server
 
-Run the following command to start a local Temporal server. This command creates a local database file (`your_temporal.db`) and opens the Temporal UI on port `8080`:
-
-```bash
-temporal server start-dev --db-filename your_temporal.db --ui-port 8080
-```
-
-You should see output similar to:
-
-```plaintext
-CLI 1.2.0 (Server 1.26.2, UI 2.34.0)
-Server:  localhost:7233
-UI:      http://localhost:8080
-Metrics: http://localhost:62564/metrics
-```
-
-*(A screenshot of the Temporal UI in your browser is recommended.)*
+Ensure the Temporal server is running (see the Installation & Setup section). The server uses the local database file (`your_temporal.db`) and provides a UI at [http://localhost:8080](http://localhost:8080).
 
 ---
 
@@ -198,8 +215,5 @@ Check the Temporal UI ([http://localhost:8080](http://localhost:8080)) to see th
 
 ## Summary
 
-This project demonstrates how to build a cross-language data processing service using Temporal. 
+This project demonstrates how to build a cross-language data processing service using Temporal.  
 By splitting the implementation into language-specific workers and leveraging Temporal's workflow orchestration, you can create modular, scalable microservices that interact seamlessly—no matter the language.
----
-
-Simply replace your existing `readme.md` content with the updated markdown above to reflect the new folder structure and usage instructions. Enjoy building your cross-language data processing service with Temporal!
