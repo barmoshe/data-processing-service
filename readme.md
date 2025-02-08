@@ -2,6 +2,9 @@
 
 A practical demonstration of building cross-language microservices with [Temporal](https://temporal.io/). This project orchestrates activities written in **Go**, **Python**, and **TypeScript**—showcasing how Temporal can seamlessly coordinate different languages to build a robust, modular data processing workflow.
 
+> **Related Article:**  
+> [Building a Cross-Language Data Processing Service with Temporal: A Practical Guide](https://medium.com/@barmoshe/building-a-cross-language-data-processing-service-with-temporal-a-practical-guide-bf0fb1155d46)
+
 ---
 
 ## Table of Contents
@@ -16,13 +19,12 @@ A practical demonstration of building cross-language microservices with [Tempora
   - [Running the Client](#running-the-client)
 - [How It Works](#how-it-works)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
 ## Overview
 
-This repository is based on the article *Building Services Across Languages: A Temporal Journey*. It demonstrates:
+This repository is based on the article [Building a Cross-Language Data Processing Service with Temporal: A Practical Guide](https://medium.com/@barmoshe/building-a-cross-language-data-processing-service-with-temporal-a-practical-guide-bf0fb1155d46). It demonstrates:
 
 - **Temporal Server Setup:** Running a local Temporal server with a built-in UI and a local database file.
 - **Multi-Language Workflow:** A workflow that invokes activities across Go, Python, and TypeScript.
@@ -205,12 +207,3 @@ Contributions are welcome! If you have suggestions or improvements, please open 
 
 Happy coding, and enjoy orchestrating your cross-language workflows with Temporal!
 
----
-
-## License
-
-*Specify your license information here (for example, MIT License).*
-
----
-
-This updated README reflects the new folder structure where workflow logic resides in the `workflow` folder and all activity implementations are now in the `activities` folder. Be sure to update your import paths in your code as needed. Enjoy building your cross-language data processing service!
