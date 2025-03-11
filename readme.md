@@ -9,16 +9,22 @@ A practical demonstration of building cross-language microservices with [Tempora
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Installation & Setup](#installation--setup)
-- [Usage](#usage)
-  - [Starting the Temporal Server](#starting-the-temporal-server)
-  - [Running Workers](#running-workers)
-  - [Running the Client](#running-the-client)
-- [How It Works](#how-it-works)
-- [Summary](#summary)
+- [Data Processing Service](#data-processing-service)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Project Structure](#project-structure)
+  - [Prerequisites](#prerequisites)
+  - [Installation \& Setup](#installation--setup)
+  - [Usage](#usage)
+    - [Starting the Temporal Server](#starting-the-temporal-server)
+    - [Running Workers](#running-workers)
+      - [Go Worker](#go-worker)
+      - [Python Worker](#python-worker)
+      - [TypeScript Worker](#typescript-worker)
+    - [Running the Client](#running-the-client)
+  - [How It Works](#how-it-works)
+  - [Summary](#summary)
+  - [License](#license)
 
 ---
 
@@ -217,3 +223,7 @@ Check the Temporal UI ([http://localhost:8080](http://localhost:8080)) to see th
 
 This project demonstrates how to build a cross-language data processing service using Temporal.  
 By splitting the implementation into language-specific workers and leveraging Temporal's workflow orchestration, you can create modular, scalable microservices that interact seamlessly—no matter the language.
+
+---
+## License
+This project is licensed under the [MIT License](LICENSE).
