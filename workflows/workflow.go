@@ -15,7 +15,7 @@ func DataProcessingWorkflow(ctx workflow.Context, data string) (string, error) {
 		InitialInterval:    time.Second,       // First retry after 1 second
 		BackoffCoefficient: 2.0,               // Double the wait time on each retry (1s → 2s → 4s → 8s, etc.)
 		MaximumInterval:    100 * time.Second, // Cap wait time at 100 seconds
-		MaximumAttempts:    5,                 // Retry up to 5 times before giving up
+		MaximumAttempts:    50,                // Retry up to 5 times before giving up
 	}
 
 	// Step 1: Add a prefix(Python)
