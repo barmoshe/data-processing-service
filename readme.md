@@ -1,4 +1,5 @@
 # Data Processing Service
+[![Temporal Code Exchange Featured](https://img.shields.io/badge/Temporal-Code_Exchange_Featured-blue?style=flat-square&logo=temporal&labelColor=141414&color=444CE7)](https://temporal.io/code-exchange/cross-language-data-processing-service-with-temporal)
 
 A practical demonstration of building cross-language microservices with [Temporal](https://temporal.io/). This project orchestrates activities written in **Go**, **Python**, and **TypeScript**—showcasing how Temporal can seamlessly coordinate different languages to build a robust, modular data processing workflow.
 
